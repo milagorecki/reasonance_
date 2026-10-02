@@ -1,0 +1,7 @@
+# versions the paper's figures were produced with
+numpy==2.3.5
+pandas==3.0.5
+scipy==1.17.1       # scipy.stats.poisson_binom needs >= 1.15
+matplotlib==3.11.2
+seaborn==0.13.2
+tueplots==0.2.4     # ICLR 2024 plotting style

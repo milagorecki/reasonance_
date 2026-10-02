@@ -1,0 +1,10 @@
+
+name: reason-py311
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - uv
+
+# create via 'conda env create -f environment.yml'
+# then run 'conda run -n reason-py311 uv pip install -r requirements/main.txt -e .'

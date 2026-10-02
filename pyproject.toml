@@ -1,0 +1,96 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reasonance"
+description = "Code for \"Does Reasoning Make Language Models Agree?\""
+readme="README.md"
+authors = [
+    { name = "Mila Gorecki" },
+]
+dynamic = ["version", "dependencies", "optional-dependencies"]
+requires-python = ">=3.11"
+license = "MIT"
+keywords = ["language-model", "reasoning", "agreement", "machine-learning"]
+
+
+[tool.setuptools.packages.find]
+where = ["."]  # list of folders that contain the packages (["."] by default)
+include = ["reasonance"]
+exclude = ["tests*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "reasonance.__version__"}
+
+dependencies = {file = "requirements/main.txt"}
+
+# Optional dependencies
+optional-dependencies.tests = {file = "requirements/tests.txt"}
+optional-dependencies.notebooks = {file = "requirements/notebooks.txt"}
+
+
+# ruff
+[tool.ruff]
+line-length = 120
+exclude = [".tox/"]
+src = ["reasonance", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+per-file-ignores = {"__init__.py" = ["F401"]}
+
+[tool.ruff.lint.isort]
+force-single-line = false
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = [
+    "tests",
+]
+
+# Coverage
+[tool.coverage.run]
+branch = true
+source = ["reasonance"]
+omit = ["tests"]
+
+[tool.coverage.report]
+show_missing = true
+
+# MyPy
+[tool.mypy]
+ignore_missing_imports = true
+no_implicit_optional = false
+exclude = ["build", "doc"]
+
+# Tox
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+env_list =
+    py311
+    py312
+    lint
+    type
+
+[testenv]
+description = run unit tests
+deps =
+    pytest>=8
+commands = python -m pytest {posargs:tests}
+
+[testenv:lint]
+description = run linters
+skip_install = true
+deps =
+    ruff
+commands = ruff check {posargs:reasonance tests}
+
+[testenv:type]
+description = run type checks
+deps =
+    mypy>=1.9
+commands =
+    mypy {posargs:reasonance tests}
+"""
